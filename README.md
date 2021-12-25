@@ -1,3 +1,60 @@
+## Firestore
+
+### REST API
+
+#### Type
+
+[https://cloud.google.com/firestore/docs/reference/rest/Shared.Types/ArrayValue#Value](https://cloud.google.com/firestore/docs/reference/rest/Shared.Types/ArrayValue#Value)
+
+```json
+{
+
+  // Union field value_type can be only one of the following:
+  "nullValue": null,
+  "booleanValue": boolean,
+  "integerValue": string,
+  "doubleValue": number,
+  "timestampValue": string,
+  "stringValue": string,
+  "bytesValue": string,
+  "referenceValue": string,
+  "geoPointValue": {
+    object (LatLng)
+  },
+  "arrayValue": {
+    object (ArrayValue)
+  },
+  "mapValue": {
+    object (MapValue)
+  }
+  // End of list of possible types for union field value_type.
+}
+```
+
+#### URL
+
+[https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents#Document](https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents#Document)
+
+##### GET
+
+```bash
+curl --location --request GET 'https://firestore.googleapis.com/v1/projects/mydeathapp/databases/(default)/documents/ip-api'
+```
+
+##### POST
+
+```bash
+curl --location --request POST 'https://firestore.googleapis.com/v1/projects/mydeathapp/databases/(default)/documents/ip-api' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "fields": {
+        "title": {
+            "stringValue": "123"
+        }
+    }
+}'
+```
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
