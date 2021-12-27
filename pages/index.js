@@ -73,7 +73,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <main className="container position-absolute top-50 start-50 translate-middle">
+      <main className="container d-flex justify-content-center align-items-center mt-5 pt-5">
         <form onSubmit={registerUser}>
           {!birthday ? (
             <>
