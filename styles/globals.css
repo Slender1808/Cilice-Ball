@@ -3,8 +3,7 @@ body {
   padding: 0;
   margin: 0;
   background-color: #212529 !important;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Times New Roman", Times, serif !important;
 }
 
 .dark-u {
@@ -13,6 +12,6 @@ body {
 }
 
 .dark-u:hover {
-  -webkit-box-shadow: 20px 20px 24px #0d0f10, -20px -20px 24px #353b42;
-  box-shadow: 20px 20px 24px #0d0f10, -20px -20px 24px #353b42 !important;
+  -webkit-box-shadow: 12px 12px 24px #121417, -12px -12px 24px #48525b;
+  box-shadow: 12px 12px 24px #121417, -12px -12px 24px #48525b !important;
 }

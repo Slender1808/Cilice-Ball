@@ -1,3 +1,29 @@
+#### Death probability table by age
+| age | probability |  
+| -- | --|
+| 1 | 0% | 
+| 5 | 1% | 
+| 10 | 3% | 
+| 15 | 7% |  
+| 20 | 12% | 
+| 25 | 17% | 
+| 30 | 22% | 
+| 35 | 27% | 
+| 40 | 32% | 
+| 45 | 37% | 
+| 50 | 42% | 
+| 55 | 47% | 
+| 60 | 52% | 
+| 65 | 57% | 
+| 70 | 62% | 
+| 75 | 67% | 
+| 80 | 72% | 
+| 85 | 77% |
+| 90 | 82% |
+
+
+analyzing the data what percentage of chance I die today? and what could be the cause of my death?
+
 ## Firestore
 
 ### REST API
