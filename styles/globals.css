@@ -6,12 +6,29 @@ body {
   font-family: "Times New Roman", Times, serif !important;
 }
 
-.dark-u {
-  -webkit-box-shadow: 12px 12px 24px #0d0f10, -12px -12px 24px #353b42;
-  box-shadow: 12px 12px 24px #0d0f10, -12px -12px 24px #353b42 !important;
+.neo {
+  color: #ffffff !important;
+
+  text-shadow: 0px 0px 30px #ffffff !important;
+  border: 0 !important;
 }
 
-.dark-u:hover {
-  -webkit-box-shadow: 12px 12px 24px #121417, -12px -12px 24px #48525b;
-  box-shadow: 12px 12px 24px #121417, -12px -12px 24px #48525b !important;
+.btn-neo:hover {
+  background: radial-gradient(
+    187.5% 187.5% at 50.29% -54.17%,
+    #ed31c4 0%,
+    #3f00f2 100%
+  );
+  box-shadow: 0px 3px 56px 20px #2c00a8,
+    -1px -1px 42px -7px rgba(237, 49, 72, 0.4) !important;
+}
+.btn-neo {
+  border: 0 !important;
+  background: radial-gradient(
+    187.5% 187.5% at 50.29% -54.17%,
+    #e031ed 0%,
+    #3f00f2 100%
+  );
+  box-shadow: 0px 3px 56px 15px #2c00a8,
+    -1px -1px 42px -7px rgba(237, 49, 72, 0.4) !important;
 }

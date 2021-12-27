@@ -80,40 +80,57 @@ function Home() {
         <meta name="description" content="MyDeathApp" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-
-      <main className="container d-flex justify-content-center align-items-center my-5 py-5">
+      <iframe
+        className="position-fixed top-50 start-50 translate-middle"
+        style={{
+          width: "120vw",
+          height: "120vh"
+        }}
+        title="Crystal Ball"
+        frameBorder="0"
+        allowFullScreen
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true"
+        allow="autoplay; fullscreen; xr-spatial-tracking"
+        xr-spatial-tracking
+        execution-while-out-of-viewport
+        execution-while-not-rendered
+        web-share
+        src="https://sketchfab.com/models/d84eb6f3eeb24e37b142c6a042f3cdbc/embed?autostart=1&camera=0&preload=1&ui_hint=0&ui_theme=dark"
+      ></iframe>
+      <main className="position-relative container d-flex justify-content-center align-items-center my-5 py-5">
         {!birthday ? (
           <form className="col-12" onSubmit={registerUser}>
             <div className="mb-3">
-              <label className="form-label fs-2 mb-5" htmlFor="date">
+              <label className="form-label fs-2 mb-5 neo" htmlFor="date">
                 {t("label-birthday")}
               </label>
               <input
-                className="form-control bg-dark text-white border-dark dark-u fs-2"
+                className="form-control bg-dark text-white border-dark btn-neo fs-2"
                 type="date"
                 id="date"
               />
             </div>
             <button
               type="submit"
-              className="btn btn-dark btn-lg dark-u m-4 fs-2"
+              className="btn btn-dark btn-lg btn-neo m-4 fs-2"
             >
               {t("submit-birthday")}
             </button>
           </form>
         ) : (
           <div>
-            <p>
+            <p className="neo">
               {birthday.toLocaleDateString()} -{" "}
               {new Date().toLocaleDateString()}
             </p>
-            <h1>{percentage}%</h1>
-            <p>{t("percentage-description")}</p>
+            <h1 className="neo">{percentage}%</h1>
+            <p className="neo">{t("percentage-description")}</p>
             <br />
 
             <HCaptcha
               ref={captcha}
-              className="mx-auto"
+              className="mx-auto neo"
               sitekey="beac5b3a-986f-408c-8e17-f31e1dacdba2"
               onVerify={(token, ekey) => {
                 setToken(token);
@@ -122,9 +139,9 @@ function Home() {
 
             {aiResult ? (
               <>
-                <p className="my-3 fs-5">{aiResult}</p>
+                <p className="my-3 fs-5 neo">{aiResult}</p>
                 {loading ? (
-                  <button className="btn btn-primary" type="button" disabled>
+                  <button className="btn btn-dark btn-lg btn-neo m-4" type="button" disabled>
                     <span
                       className="spinner-border spinner-border-sm"
                       role="status"
@@ -135,7 +152,7 @@ function Home() {
                 ) : (
                   <button
                     onClick={openai}
-                    className="btn btn-dark btn-lg dark-u m-4"
+                    className="btn btn-dark btn-neo btn-lg m-4"
                   >
                     {t("repeat")}
                   </button>
@@ -145,7 +162,7 @@ function Home() {
               <>
                 {loading ? (
                   <button
-                    className="btn btn-dark btn-lg dark-u m-4"
+                    className="btn btn-dark btn-lg btn-neo m-4"
                     type="button"
                     disabled
                   >
@@ -159,7 +176,7 @@ function Home() {
                 ) : (
                   <button
                     onClick={openai}
-                    className="btn btn-dark btn-lg dark-u m-4"
+                    className="btn btn-dark btn-lg btn-neo m-4"
                   >
                     {t("first-call")}
                   </button>
@@ -171,7 +188,6 @@ function Home() {
       </main>
 
       <Ads />
-
       <footer></footer>
     </div>
   );
