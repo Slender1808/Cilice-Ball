@@ -193,9 +193,18 @@ function Home() {
           </div>
         )}
       </main>
-      <ADSBlock />
       <Ads />
-      <footer></footer>
+      <ADSBlock />
+      <footer className="footer text-center align-middle my-3 source code fixed-bottom">
+        <a
+          href="https://github.com/Slender1808/MyDeathApp"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link-dark text-decoration-non"
+        >
+          Source code
+        </a>
+      </footer>
     </div>
   );
 }
