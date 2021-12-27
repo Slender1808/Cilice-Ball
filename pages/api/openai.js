@@ -123,7 +123,7 @@ const getAI = async (data) => {
 
   let body = {
     prompt: texto,
-    temperature: 0.5,
+    temperature: 0.8,
     max_tokens: 100,
     top_p: 1,
     frequency_penalty: 0,
