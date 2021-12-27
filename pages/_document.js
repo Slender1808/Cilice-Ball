@@ -25,6 +25,11 @@ export default class MyDocument extends Document {
           />
           <link rel="icon" href="/favicon.png" />
           <script async src="https://polyfill.io/v3/polyfill.min.js" />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7540935582112706"
+            crossOrigin="anonymous"
+          ></script>
         </Head>
         <body>
           <Main />

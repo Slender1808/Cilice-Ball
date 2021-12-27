@@ -11,7 +11,9 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 import Screen from "../lib/Screen";
 const Ads = dynamic(() => import("../components/adaround"), { ssr: false });
-const ADSBlock = dynamic(() => import("../components/ADSBlock"), { ssr: false });
+const ADSBlock = dynamic(() => import("../components/ADSBlock"), {
+  ssr: false,
+});
 
 function Home() {
   const { t } = useTranslation("common");
@@ -85,7 +87,7 @@ function Home() {
         className="position-fixed top-50 start-50 translate-middle"
         style={{
           width: "120vw",
-          height: "120vh"
+          height: "120vh",
         }}
         title="Crystal Ball"
         frameBorder="0"
