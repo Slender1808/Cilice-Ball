@@ -144,7 +144,7 @@ const getAI = async (data) => {
     console.log(texto, response.data.choices[0].text);
     return { input: texto, output: response.data.choices[0].text };
   } catch (error) {
-    console.log(error.message);
+    console.log("getAI: ",error.message);
     return { message: error.message };
   }
 };
@@ -177,7 +177,7 @@ export default async function Openai(req, res) {
                   });
 
                  
-                  postData(
+                  await postData(
                     JSON.stringify({
                       ai: ai,
                       location: location,
@@ -187,7 +187,8 @@ export default async function Openai(req, res) {
                       birthday: birthday,
                     })
                   );
-
+                  
+                  console.log()
                   res.json({ message: ai.output });
                   // getAI
                 } catch (error) {
