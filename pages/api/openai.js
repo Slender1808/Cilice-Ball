@@ -19,8 +19,7 @@ const postData = async (data) => {
     );
     console.log(response.data);
   } catch (error) {
-    console.log(error);
-    return { message: error.message };
+    console.log("postData: ",error.message);
   }
 };
 
@@ -177,23 +176,19 @@ export default async function Openai(req, res) {
                     birthday: birthday,
                   });
 
-                  try {
-                    await postData(
-                      JSON.stringify({
-                        ai: ai,
-                        location: location,
-                        dev: { ...AgentDev, ...dev },
-                        agent: req.headers["user-agent"],
-                        ip: ip,
-                        birthday: birthday,
-                      })
-                    );
+                 
+                  postData(
+                    JSON.stringify({
+                      ai: ai,
+                      location: location,
+                      dev: { ...AgentDev, ...dev },
+                      agent: req.headers["user-agent"],
+                      ip: ip,
+                      birthday: birthday,
+                    })
+                  );
 
-                    //postData
-                    res.json({ message: ai.output });
-                  } catch (error) {
-                    res.status(500).json(error);
-                  }
+                  res.json({ message: ai.output });
                   // getAI
                 } catch (error) {
                   res.status(500).json(error);
