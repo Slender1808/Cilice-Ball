@@ -11,6 +11,7 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 import Screen from "../lib/Screen";
 const Ads = dynamic(() => import("../components/adaround"), { ssr: false });
+const ADSBlock = dynamic(() => import("../components/ADSBlock"), { ssr: false });
 
 function Home() {
   const { t } = useTranslation("common");
@@ -51,7 +52,7 @@ function Home() {
   useEffect(() => {
     setTimeout(() => {
       setPercentage(
-        (((new Date() - birthday) / 3471206400000) * 100).toFixed(20)
+        (((new Date() - birthday) / 3471206400000) * 100).toFixed(19)
       );
     }, 40);
   }, [percentage]);
@@ -96,11 +97,11 @@ function Home() {
         execution-while-out-of-viewport
         execution-while-not-rendered
         web-share
-        src="https://sketchfab.com/models/d84eb6f3eeb24e37b142c6a042f3cdbc/embed?autostart=1&camera=0&preload=1&ui_hint=0&ui_theme=dark"
+        src="https://sketchfab.com/models/d84eb6f3eeb24e37b142c6a042f3cdbc/embed?autospin=1&autostart=1&preload=1&ui_hint=0&ui_theme=dark"
       ></iframe>
       <main className="position-relative container d-flex justify-content-center align-items-center my-5 py-5">
         {!birthday ? (
-          <form className="col-12" onSubmit={registerUser}>
+          <form className="col-12 col-md-8" onSubmit={registerUser}>
             <div className="mb-3">
               <label className="form-label fs-2 mb-5 neo" htmlFor="date">
                 {t("label-birthday")}
@@ -141,7 +142,11 @@ function Home() {
               <>
                 <p className="my-3 fs-5 neo">{aiResult}</p>
                 {loading ? (
-                  <button className="btn btn-dark btn-lg btn-neo m-4" type="button" disabled>
+                  <button
+                    className="btn btn-dark btn-lg btn-neo m-4"
+                    type="button"
+                    disabled
+                  >
                     <span
                       className="spinner-border spinner-border-sm"
                       role="status"
@@ -186,7 +191,7 @@ function Home() {
           </div>
         )}
       </main>
-
+      <ADSBlock />
       <Ads />
       <footer></footer>
     </div>
