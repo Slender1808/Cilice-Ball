@@ -73,7 +73,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <main className="container d-flex justify-content-center align-items-center mt-5 pt-5">
+      <main className="container d-flex justify-content-center align-items-center my-5 py-5">
         <form onSubmit={registerUser}>
           {!birthday ? (
             <>
