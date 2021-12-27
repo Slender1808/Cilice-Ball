@@ -62,7 +62,7 @@ const getLocation = async (ip) => {
 };
 
 const getAI = async (data) => {
-  let texto = `\nbirthday: ${data.birthday.toLocaleDateString()}\nage: ${
+  let texto = `My data\n\nbirthday: ${data.birthday.toLocaleDateString()}\nage: ${
     new Date().getFullYear() - data.birthday.getFullYear()
   }`;
 
@@ -119,7 +119,7 @@ const getAI = async (data) => {
     texto += "\ncurrency: " + data.location.currency;
   }
 
-  texto += "\n\nanalyzing the data how could my death be?\n";
+  texto += "\n\nanalyzing the data what could be the cause of my death?\n";
 
   let body = {
     prompt: texto,
@@ -188,7 +188,6 @@ export default async function Openai(req, res) {
                     })
                   );
                   
-                  console.log()
                   res.json({ message: ai.output });
                   // getAI
                 } catch (error) {
