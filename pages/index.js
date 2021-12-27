@@ -74,7 +74,7 @@ export default function Home() {
       </Head>
 
       <main className="container d-flex justify-content-center align-items-center my-5 py-5">
-        <form onSubmit={registerUser}>
+        <form className="col-12" onSubmit={registerUser}>
           {!birthday ? (
             <>
               <div className="mb-3">
