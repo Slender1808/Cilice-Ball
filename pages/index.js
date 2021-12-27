@@ -2,17 +2,20 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 
 import Head from "next/head";
+import dynamic from "next/dynamic";
 
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 import Screen from "../lib/Screen";
-
+const Ads = dynamic(() => import("../components/adaround"), { ssr: false });
 
 export default function Home() {
   let [birthday, setBirthday] = useState(false);
   let [percentage, setPercentage] = useState(0);
+  let [token, setToken] = useState(null);
+  let [aiResult, setAIResult] = useState(null);
+
   let captcha = useRef(null);
-  const [token, setToken] = useState(null);
 
   const openai = async () => {
     if (token && token.length > 2000) {
@@ -23,7 +26,8 @@ export default function Home() {
           birthday: birthday.getTime(),
         });
 
-        setResult(response.data.generated_text);
+        console.log(response.data);
+        setAIResult(response.data.message);
 
         setToken(null);
         captcha.current.resetCaptcha();
@@ -45,7 +49,7 @@ export default function Home() {
   }, [percentage]);
 
   const registerUser = (event) => {
-    console.log("Screen: ",JSON.stringify(new Screen().load()))
+    console.log("Screen: ", JSON.stringify(new Screen().load()));
     event.preventDefault(); // don't redirect the page
     // where we'll add our form logic
     console.log(event);
@@ -83,7 +87,10 @@ export default function Home() {
                   id="date"
                 />
               </div>
-              <button type="submit" className="btn btn-dark btn-lg dark-u m-4 fs-2">
+              <button
+                type="submit"
+                className="btn btn-dark btn-lg dark-u m-4 fs-2"
+              >
                 Revelar
               </button>
             </>
@@ -113,27 +120,17 @@ export default function Home() {
                 }}
               />
 
-              <button
-                className="btn btn-dark btn-lg dark-u m-4"
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator
-                      .share({
-                        title: "MyDeathApp",
-                        text: "find chance you die now",
-                        url: "https://mydeathapp.vercel.app/",
-                      })
-                      .then(() => console.log("Successful share"))
-                      .catch((error) => console.log("Error sharing", error));
-                  }
-                }}
-              >
-                Compartilhar
-              </button>
+              {aiResult ? (
+                <>
+                  <p className="my-3 fs-5">{aiResult}</p>
+                </>
+              ) : null}
             </div>
           )}
         </form>
       </main>
+
+      <Ads />
 
       <footer></footer>
     </div>
