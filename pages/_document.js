@@ -1,7 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 export default class MyDocument extends Document {
-  componentDidMount() {
-  }
+  componentDidMount() {}
   render() {
     return (
       <Html>
@@ -19,6 +18,10 @@ export default class MyDocument extends Document {
           <meta
             property="og:image"
             content="https://mydeathapp.vercel.app/favicon.png"
+          />
+          <meta
+            name="google-site-verification"
+            content="K6n_i0D944OJIJwD-M5iQ-jy3oAKFS5aTTL3uJOpy9I"
           />
           <link rel="icon" href="/favicon.png" />
           <script async src="https://polyfill.io/v3/polyfill.min.js" />
