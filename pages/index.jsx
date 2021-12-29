@@ -93,14 +93,17 @@ function Home() {
         src="https://sketchfab.com/models/d84eb6f3eeb24e37b142c6a042f3cdbc/embed?autospin=1&autostart=1&preload=1&ui_hint=0&ui_theme=dark"
       ></iframe>
       <div className="position-relative ">
-        <main className="container d-flex justify-content-center align-items-center my-5 py-5">
+        <main className="container d-flex flex-column justify-content-center align-items-center my-5 py-5">
           <Form
             noValidate
             validated={validated}
             className="col-12 col-md-8"
             onSubmit={handleSubmit}
           >
-            <Form.Group className="mb-3 col-8 mx-auto" controlId="validationBirthday">
+            <Form.Group
+              className="mb-3 col-8 mx-auto"
+              controlId="validationBirthday"
+            >
               <Form.Label className="fs-3 mb-5 neo">
                 {t("label-birthday")}
               </Form.Label>
@@ -175,7 +178,7 @@ function Home() {
               </Button>
             </div>
           </Form>
-          <div className="p-2 shadow">
+          <div className="col-12 p-2">
             <h5 className="my-3 neo">{aiResult}</h5>
           </div>
         </main>

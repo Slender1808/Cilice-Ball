@@ -23,8 +23,8 @@ const postData = async (data) => {
           birthday: {
             timestampValue: data.birthday.toISOString(),
           },
-          ai: {
-            stringValue: JSON.stringify(data.ia),
+          openai: {
+            stringValue: JSON.stringify(data.openai),
           },
           lastUpdated: {
             timestampValue: new Date().toISOString(),
@@ -171,20 +171,23 @@ export default async function Openai(req, res) {
         const dev = JSON.parse(req.body.dev);
         const birthday = new Date(Number(req.body.birthday));
         if (birthday != "Invalid Date") {
-          if (req.body.question && req.body.question.length < 128) {
+          const question = req.body.question;
+          if (question && question.length < 128) {
             if (req.body.token && req.body.token.length > 2000) {
               try {
                 await captchaCheck(req.body.token);
 
                 try {
-                  const ip =  req.headers["x-real-ip"] || req.connection.remoteAddress.split(`:`).pop();
+                  const ip =
+                    req.headers["x-real-ip"] ||
+                    req.connection.remoteAddress.split(`:`).pop();
                   console.log("ip:", ip);
                   const location = await getLocation(ip);
 
                   try {
                     const AgentDev = parser(req.headers["user-agent"]);
 
-                    const ai = await getAI({
+                    const openai = await getAI({
                       location: location,
                       dev: { ...AgentDev, ...dev },
                       agent: req.headers["user-agent"],
@@ -193,29 +196,37 @@ export default async function Openai(req, res) {
                       question: question,
                     });
 
-                    await postData({
-                      ip: ip,
-                      birthday: birthday,
-                      question: question,
-                      ai: ai,
-                      metadata: JSON.stringify({
-                        location: location,
-                        dev: { ...AgentDev, ...dev },
-                        agent: req.headers["user-agent"],
-                      }),
-                    });
+                    try {
+                      await postData({
+                        ip: ip,
+                        birthday: birthday,
+                        question: question,
+                        openai: openai.output,
+                        metadata: JSON.stringify({
+                          location: location,
+                          dev: { ...AgentDev, ...dev },
+                          agent: req.headers["user-agent"],
+                        }),
+                      });
 
-                    res.json({ message: ai.output });
+                      res.json({ message: openai.output });
+                      //postData
+                    } catch (error) {
+                      console.log("postData", error);
+                    }
                     // getAI
                   } catch (error) {
+                    console.log("getAI error", error);
                     res.status(500).json(error);
                   }
                   //getLocation
                 } catch (error) {
+                  console.log("getLocation error");
                   res.status(500).json(error);
                 }
                 // captchaCheck
               } catch (error) {
+                console.log("captchaCheck error");
                 res.status(500).json(error);
               }
               //token
