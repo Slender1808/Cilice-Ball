@@ -2,8 +2,8 @@
   "label-birthday": "Mark your birth date.",
   "submit-birthday": "Show",
   "loading": "Analyzing...",
-  "repeat": "Consult again ?",
-  "first-call": "Consult the oracle",
-  "feedback": "You fill this!",
-  "question": "Question"
+  "call": "Consult the oracle",
+  "feedback": "You need to fill this out!",
+  "question": "Question",
+  "placeholder": "What will my future be like?"
 }

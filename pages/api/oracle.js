@@ -134,7 +134,7 @@ const getAI = async (data) => {
     texto += "\ncurrency: " + data.location.currency;
   }
 
-  texto += `\nanalyzing the data answer the question.\n${data.question} \n`;
+  texto += `\nanalyzing the data answer the question.\n${data.question}\n`;
 
   let body = {
     prompt: texto,

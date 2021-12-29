@@ -1,9 +1,9 @@
 {
-    "label-birthday": "Marque sua data de nascimento.",
-    "submit-birthday": "Revelar",
-    "loading": "Analisando...",
-    "repeat": "Consultar novamente",
-    "first-call": "Consultar o oráculo",
-    "feedback": "Você preenche isso!",
-    "question": "Pergunta"
-  }
+  "label-birthday": "Marque sua data de nascimento.",
+  "submit-birthday": "Revelar",
+  "loading": "Analisando...",
+  "call": "Consultar o oráculo",
+  "feedback": "Você precisa preencher isso!",
+  "question": "Pergunta",
+  "placeholder": "Como será meu futuro?"
+}

@@ -5,7 +5,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
-import { useTranslation } from "next-i18next";
+import { useTranslation, i18n } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import HCaptcha from "@hcaptcha/react-hcaptcha";
@@ -23,9 +23,13 @@ function Home() {
   let [aiResult, setAIResult] = useState(null);
   let [loading, setLoading] = useState(false);
   let [validated, setValidated] = useState(false);
-  let [question, setQuestion] = useState("");
+  let [question, setQuestion] = useState("What will my future be like?");
 
   let captcha = useRef(null);
+
+  useEffect(() => {
+    console.log("t", t("label-birthday"));
+  }, []);
 
   const handleSubmit = async (event) => {
     setValidated(true);
@@ -43,7 +47,6 @@ function Home() {
       setBirthday(new Date(date.getTime() + 60 * 60 * 24 * 1000));
 
       // API
-
       if (token && token.length > 2000) {
         setLoading(true);
         try {
@@ -118,7 +121,7 @@ function Home() {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="validationText">
+            <Form.Group className="mb-3" controlId="floatingTextarea">
               <Form.Label className="fs-3 my-3 neo">{t("question")}</Form.Label>
               <Form.Control
                 className="text-white btn-neo fs-4"
@@ -127,6 +130,7 @@ function Home() {
                 rows={5}
                 maxLength="128"
                 required
+                defaultValue="What will my future be like ?"
               />
               <Form.Control.Feedback type="invalid" className="neo-r">
                 {t("feedback")}
@@ -173,7 +177,7 @@ function Home() {
                     {t("loading")}
                   </>
                 ) : (
-                  <>{t("first-call")}</>
+                  <>{t("call")}</>
                 )}
               </Button>
             </div>
