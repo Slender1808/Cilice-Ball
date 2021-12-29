@@ -47,7 +47,7 @@ function Home() {
       if (token && token.length > 2000) {
         setLoading(true);
         try {
-          const response = await axios.post("/api/openai", {
+          const response = await axios.post("/api/oracle", {
             token: token,
             dev: JSON.stringify(new Screen().load()),
             birthday: date.getTime(),

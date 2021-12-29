@@ -11,15 +11,30 @@ const postData = async (data) => {
           key: {
             stringValue: process.env.FIREBASE,
           },
-          dateString: {
-            stringValue: data,
+          metadata: {
+            stringValue: data.metadata,
+          },
+          ip: {
+            stringValue: data.ip,
+          },
+          question: {
+            stringValue: data.question,
+          },
+          birthday: {
+            timestampValue: data.birthday.toISOString(),
+          },
+          ai: {
+            stringValue: JSON.stringify(data.ia),
+          },
+          lastUpdated: {
+            timestampValue: new Date().toISOString(),
           },
         },
       }
     );
     console.log(response.data);
   } catch (error) {
-    console.log("postData: ",error.message);
+    console.log("postData: ", error.message);
   }
 };
 
@@ -119,7 +134,7 @@ const getAI = async (data) => {
     texto += "\ncurrency: " + data.location.currency;
   }
 
-  texto += "\n\nanalyzing the data what could be the cause of my death?\n";
+  texto += `\n\n${data.question} \n`;
 
   let body = {
     prompt: texto,
@@ -144,7 +159,7 @@ const getAI = async (data) => {
     console.log(texto, response.data.choices[0].text);
     return { input: texto, output: response.data.choices[0].text };
   } catch (error) {
-    console.log("getAI: ",error.message);
+    console.log("getAI: ", error.message);
     return { message: error.message };
   }
 };
@@ -156,54 +171,60 @@ export default async function Openai(req, res) {
         const dev = JSON.parse(req.body.dev);
         const birthday = new Date(Number(req.body.birthday));
         if (birthday != "Invalid Date") {
-          if (req.body.token && req.body.token.length > 2000) {
-            try {
-              await captchaCheck(req.body.token);
-
+          if (req.body.question && req.body.question.length < 128) {
+            if (req.body.token && req.body.token.length > 2000) {
               try {
-                const ip = "177.137.112.171"; // req.connection.remoteAddress.split(`:`).pop();
-                console.log("ip:", ip);
-                const location = await getLocation(ip);
+                await captchaCheck(req.body.token);
 
                 try {
-                  const AgentDev = parser(req.headers["user-agent"]);
+                  const ip = "177.137.112.171"; // req.connection.remoteAddress.split(`:`).pop();
+                  console.log("ip:", ip);
+                  const location = await getLocation(ip);
 
-                  const ai = await getAI({
-                    location: location,
-                    dev: { ...AgentDev, ...dev },
-                    agent: req.headers["user-agent"],
-                    ip: ip,
-                    birthday: birthday,
-                  });
+                  try {
+                    const AgentDev = parser(req.headers["user-agent"]);
 
-                 
-                  await postData(
-                    JSON.stringify({
-                      ai: ai,
+                    const ai = await getAI({
                       location: location,
                       dev: { ...AgentDev, ...dev },
                       agent: req.headers["user-agent"],
                       ip: ip,
                       birthday: birthday,
-                    })
-                  );
-                  
-                  res.json({ message: ai.output });
-                  // getAI
+                      question: question,
+                    });
+
+                    await postData({
+                      ip: ip,
+                      birthday: birthday,
+                      question: question,
+                      ai: ai,
+                      metadata: JSON.stringify({
+                        location: location,
+                        dev: { ...AgentDev, ...dev },
+                        agent: req.headers["user-agent"],
+                      }),
+                    });
+
+                    res.json({ message: ai.output });
+                    // getAI
+                  } catch (error) {
+                    res.status(500).json(error);
+                  }
+                  //getLocation
                 } catch (error) {
                   res.status(500).json(error);
                 }
-                //getLocation
+                // captchaCheck
               } catch (error) {
                 res.status(500).json(error);
               }
-              // captchaCheck
-            } catch (error) {
-              res.status(500).json(error);
+              //token
+            } else {
+              res.status(401).json({ message: "token not found" });
             }
-            //token
+            //question
           } else {
-            res.status(401).json({ message: "token not found" });
+            res.status(401).json({ message: "question not found" });
           }
           // birthday
         } else {
