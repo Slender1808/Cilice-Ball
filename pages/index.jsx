@@ -100,7 +100,7 @@ function Home() {
             className="col-12 col-md-8"
             onSubmit={handleSubmit}
           >
-            <Form.Group className="mb-3" controlId="validationBirthday">
+            <Form.Group className="mb-3 col-8 mx-auto" controlId="validationBirthday">
               <Form.Label className="fs-3 mb-5 neo">
                 {t("label-birthday")}
               </Form.Label>
