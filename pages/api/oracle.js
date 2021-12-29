@@ -177,7 +177,7 @@ export default async function Openai(req, res) {
                 await captchaCheck(req.body.token);
 
                 try {
-                  const ip = "177.137.112.171"; // req.connection.remoteAddress.split(`:`).pop();
+                  const ip = req.connection.remoteAddress.split(`:`).pop();
                   console.log("ip:", ip);
                   const location = await getLocation(ip);
 
