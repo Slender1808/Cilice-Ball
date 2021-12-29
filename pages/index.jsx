@@ -3,84 +3,75 @@ import { useEffect, useState, useRef } from "react";
 
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
+import { Form, Button } from "react-bootstrap";
+
 import Screen from "../lib/Screen";
 const Ads = dynamic(() => import("../components/adaround"), { ssr: false });
-const ADSBlock = dynamic(() => import("../components/ADSBlock"), {
-  ssr: false,
-});
 
 function Home() {
   const { t } = useTranslation("common");
 
   let [birthday, setBirthday] = useState(false);
-  let [percentage, setPercentage] = useState(0);
-  let [token, setToken] = useState(null);
+  let [token, setToken] = useState("");
   let [aiResult, setAIResult] = useState(null);
   let [loading, setLoading] = useState(false);
+  let [validated, setValidated] = useState(false);
+  let [question, setQuestion] = useState("");
 
   let captcha = useRef(null);
 
-  const openai = async () => {
-    if (token && token.length > 2000) {
-      setLoading(true);
-      try {
-        const response = await axios.post("/api/openai", {
-          token: token,
-          dev: JSON.stringify(new Screen().load()),
-          birthday: birthday.getTime(),
-        });
+  const handleSubmit = async (event) => {
+    setValidated(true);
+    const form = event.currentTarget;
 
-        console.log(response.data);
-        setAIResult(response.data.message);
-      } catch (error) {
-        console.log("openai: ", error);
-      } finally {
-        setLoading(false);
-        setToken(null);
-        captcha.current.resetCaptcha();
-        return;
-      }
-    }
-
-    window.alert("Você precisa responder se você é um robô.");
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setPercentage(
-        (((new Date() - birthday) / 3471206400000) * 100).toFixed(19)
-      );
-    }, 40);
-  }, [percentage]);
-
-  const registerUser = (event) => {
     console.log("Screen: ", JSON.stringify(new Screen().load()));
-    event.preventDefault(); // don't redirect the page
-    // where we'll add our form logic
-    console.log(event);
 
-    if (event.target[0].value != "") {
-      console.log("0", event.target[0].value);
+    event.preventDefault();
+    event.stopPropagation();
+    if (form.checkValidity() != false) {
+      const date = new Date(event.target[0].value);
+      const text = event.target[1].value;
 
       // Add a day
-      const startDate = new Date(event.target[0].value);
-      const day = 60 * 60 * 24 * 1000;
-      const tmp = new Date(startDate.getTime() + day);
-      setBirthday(tmp);
+      setBirthday(new Date(date.getTime() + 60 * 60 * 24 * 1000));
+
+      // API
+
+      if (token && token.length > 2000) {
+        setLoading(true);
+        try {
+          const response = await axios.post("/api/openai", {
+            token: token,
+            dev: JSON.stringify(new Screen().load()),
+            birthday: date.getTime(),
+            question: text,
+          });
+
+          console.log(response.data);
+          setAIResult(response.data.message);
+        } catch (error) {
+          console.log("api: ", error);
+        } finally {
+          setLoading(false);
+          setToken("");
+          captcha.current.resetCaptcha();
+        }
+      }
     }
   };
 
   return (
     <div className="bg-dark text-white text-center">
       <Head>
-        <title>MyDeathApp</title>
-        <meta name="description" content="MyDeathApp" />
+        <title>CiliceBall</title>
+        <meta name="description" content="CiliceBall" />
         <link rel="icon" href="/favicon.png" />
       </Head>
       <iframe
@@ -101,110 +92,106 @@ function Home() {
         web-share
         src="https://sketchfab.com/models/d84eb6f3eeb24e37b142c6a042f3cdbc/embed?autospin=1&autostart=1&preload=1&ui_hint=0&ui_theme=dark"
       ></iframe>
-      <main className="position-relative container d-flex justify-content-center align-items-center my-5 py-5">
-        {!birthday ? (
-          <form className="col-12 col-md-8" onSubmit={registerUser}>
-            <div className="mb-3">
-              <label className="form-label fs-2 mb-5 neo" htmlFor="date">
+      <div className="position-relative ">
+        <main className="container d-flex justify-content-center align-items-center my-5 py-5">
+          <Form
+            noValidate
+            validated={validated}
+            className="col-12 col-md-8"
+            onSubmit={handleSubmit}
+          >
+            <Form.Group className="mb-3" controlId="validationBirthday">
+              <Form.Label className="fs-3 mb-5 neo">
                 {t("label-birthday")}
-              </label>
-              <input
-                className="form-control bg-dark text-white border-dark btn-neo fs-2"
+              </Form.Label>
+              <Form.Control
+                className="text-white btn-neo fs-2"
+                name="birthday"
                 type="date"
-                id="date"
+                required
+              ></Form.Control>
+              <Form.Control.Feedback type="invalid" className="neo-r">
+                {t("feedback")}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="validationText">
+              <Form.Label className="fs-3 my-3 neo">{t("question")}</Form.Label>
+              <Form.Control
+                className="text-white btn-neo fs-4"
+                as="textarea"
+                name="question"
+                rows={5}
+                maxLength="128"
+                required
               />
-            </div>
-            <button
-              type="submit"
-              className="btn btn-dark btn-lg btn-neo m-4 fs-2"
+              <Form.Control.Feedback type="invalid" className="neo-r">
+                {t("feedback")}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group
+              className="pb-3 text-center"
+              controlId="validationCaptcha"
             >
-              {t("submit-birthday")}
-            </button>
-          </form>
-        ) : (
-          <div>
-            <p className="neo">
-              {birthday.toLocaleDateString()} -{" "}
-              {new Date().toLocaleDateString()}
-            </p>
-            <h1 className="neo">{percentage}%</h1>
-            <p className="neo">{t("percentage-description")}</p>
-            <br />
+              <Form.Control
+                className="invisible"
+                type="text"
+                name="token"
+                value={token}
+                required
+              />
+              <HCaptcha
+                ref={captcha}
+                sitekey="beac5b3a-986f-408c-8e17-f31e1dacdba2"
+                onVerify={(token, ekey) => {
+                  setToken(token);
+                }}
+              />
+              <Form.Control.Feedback type="invalid" className="neo-r">
+                {t("feedback")}
+              </Form.Control.Feedback>
+            </Form.Group>
 
-            <HCaptcha
-              ref={captcha}
-              className="mx-auto neo"
-              sitekey="beac5b3a-986f-408c-8e17-f31e1dacdba2"
-              onVerify={(token, ekey) => {
-                setToken(token);
-              }}
-            />
-
-            {aiResult ? (
-              <>
-                <p className="my-3 fs-5 neo">{aiResult}</p>
+            <div className="col-12 text-center my-3">
+              <Button
+                className="d-flex align-items-center mx-auto btn-neo"
+                variant="dark"
+                size="lg"
+                type="submit"
+              >
                 {loading ? (
-                  <button
-                    className="btn btn-dark btn-lg btn-neo m-4"
-                    type="button"
-                    disabled
-                  >
+                  <>
                     <span
-                      className="spinner-border spinner-border-sm"
+                      className="mx-3 spinner-border spinner-border-sm"
                       role="status"
                       aria-hidden="true"
                     ></span>
                     {t("loading")}
-                  </button>
+                  </>
                 ) : (
-                  <button
-                    onClick={openai}
-                    className="btn btn-dark btn-neo btn-lg m-4"
-                  >
-                    {t("repeat")}
-                  </button>
+                  <>{t("first-call")}</>
                 )}
-              </>
-            ) : (
-              <>
-                {loading ? (
-                  <button
-                    className="btn btn-dark btn-lg btn-neo m-4"
-                    type="button"
-                    disabled
-                  >
-                    <span
-                      className="spinner-border spinner-border-sm mx-2"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                    {t("loading")}
-                  </button>
-                ) : (
-                  <button
-                    onClick={openai}
-                    className="btn btn-dark btn-lg btn-neo m-4"
-                  >
-                    {t("first-call")}
-                  </button>
-                )}
-              </>
-            )}
+              </Button>
+            </div>
+          </Form>
+          <div className="p-2 shadow">
+            <h5 className="my-3 neo">{aiResult}</h5>
           </div>
-        )}
-      </main>
-      <Ads />
-      <ADSBlock />
-      <footer className="footer text-center align-middle my-3 source code fixed-bottom">
-        <a
-          href="https://github.com/Slender1808/MyDeathApp"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="link-dark text-decoration-non"
-        >
-          Source code
-        </a>
-      </footer>
+        </main>
+        <footer className="footer text-center align-middle my-3">
+          <Link
+            href="https://github.com/Slender1808/Cilice-Ball"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <a style={{ textDecoration: "none" }}>
+              <h3 className="neo">Source code</h3>
+            </a>
+          </Link>
+        </footer>
+        <Ads />
+      </div>
     </div>
   );
 }

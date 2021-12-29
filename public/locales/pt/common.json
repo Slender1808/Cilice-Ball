@@ -1,8 +1,9 @@
 {
     "label-birthday": "Marque sua data de nascimento.",
     "submit-birthday": "Revelar",
-    "percentage-description": "Chance de você morrer agora.",
     "loading": "Analisando...",
-    "repeat": "Verificar novamente",
-    "first-call": "Descubra como sua morte pode ser."
+    "repeat": "Consultar novamente",
+    "first-call": "Consultar o oráculo",
+    "feedback": "Você preenche isso!",
+    "question": "Pergunta"
   }
